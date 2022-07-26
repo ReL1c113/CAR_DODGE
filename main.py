@@ -1,26 +1,21 @@
 import pygame
 import math
 import random
-import time
 
-
-tracking=time.time()
 
 pygame.init()
 
 screen = pygame.display.set_mode((600, 800))
 
 pygame.display.set_caption("CAR GAME")
-numb_of_car = 3
-time_added=0
+
+time_added = 0
 
 background = pygame.image.load('car_background.jpg')
 l1 = [20, 120, 220, 320, 420, 520]
 background_height = background.get_height()
 scroll = 0
 pannel = math.ceil(800 / background_height) + 2
-
-
 
 # PLAYER
 playerImg = pygame.image.load('car (4).png')
@@ -64,6 +59,12 @@ e6_x = random.choice(l1)
 e6_y = random.randint(-400, -320)
 change_e6 = 0.6
 
+# ENEMY 7
+e7Img = pygame.image.load('car (2)r.png')
+e7_x = random.choice(l1)
+e7_y = random.randint(-400, -320)
+change_e7 = 0.6
+
 
 # ENEMY CAR USER DEFINED FUNCTIONS
 def e1(x, y):
@@ -90,6 +91,10 @@ def e6(x, y):
     screen.blit(e6Img, (x, y))
 
 
+def e7(x, y):
+    screen.blit(e7Img, (x, y))
+
+
 def player(x, y):
     screen.blit(playerImg, (x, y))
 
@@ -97,17 +102,15 @@ def player(x, y):
 # COLLISION USER DEFINED FUNCTIONS
 def isCollision(x, y, z, w):
     distance = math.sqrt((math.pow((x - z), 2)) + (math.pow((y - w), 2)))
-    if distance <= 30:
+    if distance <= 50:
         return True
     else:
         return False
 
 
-
-
 run = True
 while (run):
-    time_added=time_added+0.00001
+    time_added = time_added + 0.00001
     for i in range(pannel):
         screen.blit(background, (0, i * background_height + scroll - background_height))
     for event in pygame.event.get():
@@ -125,12 +128,13 @@ while (run):
                 change_px = 0
     player_x = change_px + player_x
     # ENEMY CAR MVEMENT
-    e1_y = e1_y + change_e1 +time_added
-    e3_y = e3_y + change_e3 +time_added
-    e2_y = e2_y + change_e2 +time_added
-    e4_y = e4_y + change_e4 +time_added
-    e5_y = e5_y + change_e5 +time_added
-    e6_y = e6_y + change_e6 +time_added
+    e1_y = e1_y + change_e1 + time_added
+    e3_y = e3_y + change_e3 + time_added
+    e2_y = e2_y + change_e2 + time_added
+    e4_y = e4_y + change_e4 + time_added
+    e5_y = e5_y + change_e5 + time_added
+    e6_y = e6_y + change_e6 + time_added
+    e7_y = e7_y + change_e7 + time_added
     # ENEMY CAR RESPAWNING
     if e1_y >= 900:
         e1_x = random.choice(l1)
@@ -152,9 +156,13 @@ while (run):
         e5_x = random.choice(l1)
         e5_y = random.randint(-300, -240)
 
-    if e6_y>=900:
-        e6_x=random.choice(l1)
-        e6_y=random.randint(-400,-320)
+    if e6_y >= 900:
+        e6_x = random.choice(l1)
+        e6_y = random.randint(-400, -320)
+
+    if e7_y >= 900:
+        e7_x = random.choice(l1)
+        e7_y = random.randint(-600, -400)
     # BOUNDARY FOR OUR PLAYER
     if player_x >= 520:
         player_x = 520
@@ -179,6 +187,9 @@ while (run):
     collision6 = isCollision(player_x, player_y, e6_x, e6_y)
     if collision6:
         break
+    collision7 = isCollision(player_x, player_y, e7_x, e7_y)
+    if collision7:
+        break
 
     # ENEMY CAR FINAL POSITION
     e1(e1_x, e1_y)
@@ -187,6 +198,7 @@ while (run):
     e4(e4_x, e4_y)
     e5(e5_x, e5_y)
     e6(e6_x, e6_y)
+    e7(e7_x, e7_y)
     # PLAYER FINAL POSITION
     player(player_x, player_y)
 
@@ -194,4 +206,4 @@ while (run):
     if abs(scroll) > background_height:
         scroll = 0
     pygame.display.update()
-print(tracking/100000)
+
