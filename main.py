@@ -2,7 +2,6 @@ import pygame
 import math
 import random
 
-
 pygame.init()
 
 screen = pygame.display.set_mode((600, 800))
@@ -201,6 +200,7 @@ while (run):
     e7(e7_x, e7_y)
     # PLAYER FINAL POSITION
     player(player_x, player_y)
+
 
     scroll = scroll + 0.4
     if abs(scroll) > background_height:
